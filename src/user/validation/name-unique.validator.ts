@@ -21,10 +21,10 @@ export class NameUniqueValidator implements ValidatorConstraintInterface {
   }
 }
 export const UniqueName = (optionsValidations: ValidationOptions) => {
-  return (objeto: object, propriedade: string) => {
+  return (object: object, property: string) => {
     registerDecorator({
-      target: objeto.constructor,
-      propertyName: propriedade,
+      target: object.constructor,
+      propertyName: property,
       options: optionsValidations,
       constraints: [],
       validator: NameUniqueValidator,
