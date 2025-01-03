@@ -1,8 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { CreateUserDTO } from './dto/CreateUser.dto';
 import { UserEntity } from './user.entity';
 import { v4 as uuid } from 'uuid';
+import { ListUsersDTO } from './dto/ListUsers.dto';
+import { UpdateUserDTO } from './dto/UpdateUser.dto';
 
 @Controller('/usuarios')
 export class UserController {
@@ -16,11 +19,28 @@ export class UserController {
     userEntity.Senha = dataUser.Senha;
 
     this.userRepository.salve(userEntity);
-    return { id: userEntity.id, message: 'Usuário criado com sucesso' };
+    return {
+      user: new ListUsersDTO(userEntity.id, userEntity.Nome),
+      message: 'Usuário criado com sucesso',
+    };
   }
 
   @Get()
   async getAllUsers() {
-    return this.userRepository.getAll();
+    const allUsers = await this.userRepository.getAll();
+    const usersList = allUsers.map(
+      (user) => new ListUsersDTO(user.id, user.Nome),
+    );
+    return usersList;
+  }
+@Put('/:id')
+  async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {
+    const userUpdated = await this.userRepository.updateUser(id, dataToUpdate);
+
+    return {
+      user: userUpdated,
+      message: 'Usuário atualizado com sucesso'
+    }
+
   }
 }
