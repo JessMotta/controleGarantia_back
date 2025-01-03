@@ -11,4 +11,9 @@ export class UserRepository {
   async getAll() {
     return this.users;
   }
+
+  async userExists(name: string) {
+    const possibleUser = this.users.find((user) => user.Nome === name);
+    return possibleUser !== undefined;
+  }
 }
