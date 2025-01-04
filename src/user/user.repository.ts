@@ -18,18 +18,30 @@ export class UserRepository {
     return possibleUser !== undefined;
   }
 
-  async updateUser(id: string, dataOfUpated: Partial<UserEntity>) {
+  private findById(id: string) {
     const possibleUser = this.users.find((userSalved) => userSalved.id === id);
 
     if (!possibleUser) {
       throw new Error('Usuário não encontrado');
     }
+
+    return possibleUser;
+  }
+
+  async updateUser(id: string, dataOfUpated: Partial<UserEntity>) {
+    const user = this.findById(id);
     Object.entries(dataOfUpated).forEach(([key, value]) => {
       if (key === 'id') {
         return;
       }
-      possibleUser[key] = value;
+      user[key] = value;
     });
-    return possibleUser;
+    return user;
+  }
+
+  async deleteUser(id: string) {
+    const user = this.findById(id);
+    this.users = this.users.filter((userSalved) => userSalved.id !== id);
+    return user;
   }
 }
