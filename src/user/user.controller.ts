@@ -16,11 +16,12 @@ export class UserController {
     const userEntity = new UserEntity();
     userEntity.id = uuid();
     userEntity.Nome = dataUser.Nome;
+    userEntity.Email = dataUser.Email;
     userEntity.Senha = dataUser.Senha;
 
     this.userRepository.salve(userEntity);
     return {
-      user: new ListUsersDTO(userEntity.id, userEntity.Nome),
+      user: new ListUsersDTO(userEntity.id, userEntity.Nome, userEntity.Email),
       message: 'Usuário criado com sucesso',
     };
   }
@@ -29,7 +30,7 @@ export class UserController {
   async getAllUsers() {
     const allUsers = await this.userRepository.getAll();
     const usersList = allUsers.map(
-      (user) => new ListUsersDTO(user.id, user.Nome),
+      (user) => new ListUsersDTO(user.id, user.Nome, user.Email),
     );
     return usersList;
   }

@@ -10,7 +10,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 @ValidatorConstraint({ async: true })
-export class NameUniqueValidator implements ValidatorConstraintInterface {
+export class EmailUniqueValidator implements ValidatorConstraintInterface {
   constructor(private userRepository: UserRepository) {}
   async validate(
     value: any,
@@ -20,14 +20,14 @@ export class NameUniqueValidator implements ValidatorConstraintInterface {
     return !userExists;
   }
 }
-export const UniqueName = (optionsValidations: ValidationOptions) => {
+export const UniqueEmail = (optionsValidations: ValidationOptions) => {
   return (object: object, property: string) => {
     registerDecorator({
       target: object.constructor,
       propertyName: property,
       options: optionsValidations,
       constraints: [],
-      validator: NameUniqueValidator,
+      validator: EmailUniqueValidator,
     });
   };
 };
