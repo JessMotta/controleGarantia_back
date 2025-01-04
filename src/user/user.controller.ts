@@ -3,7 +3,6 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { UserRepository } from './user.repository';
 import { CreateUserDTO } from './dto/CreateUser.dto';
 import { UserEntity } from './user.entity';
-import { v4 as uuid } from 'uuid';
 import { ListUsersDTO } from './dto/ListUsers.dto';
 import { UpdateUserDTO } from './dto/UpdateUser.dto';
 
@@ -12,18 +11,9 @@ export class UserController {
   constructor(private userRepository: UserRepository) {}
 
   @Post()
-  async createUser(@Body() dataUser: CreateUserDTO) {
-    const userEntity = new UserEntity();
-    userEntity.id = uuid();
-    userEntity.Nome = dataUser.Nome;
-    userEntity.Email = dataUser.Email;
-    userEntity.Senha = dataUser.Senha;
-
-    this.userRepository.salve(userEntity);
-    return {
-      user: new ListUsersDTO(userEntity.id, userEntity.Nome, userEntity.Email),
-      message: 'Usuário criado com sucesso',
-    };
+  async createUser(@Body() dataUser: UserEntity): Promise<UserEntity>  {
+    const user = await this.userRepository.salve(dataUser);
+    return user;
   }
 
   @Get()
@@ -33,6 +23,12 @@ export class UserController {
       (user) => new ListUsersDTO(user.id, user.Nome, user.Email),
     );
     return usersList;
+  }
+  @Get('/:id')
+  async getUserById(@Param('id') id: string) {
+    const oneUser = await this.userRepository.getById(id);
+    const userData = new ListUsersDTO(oneUser.id, oneUser.Nome, oneUser.Email);
+    return userData;
   }
 @Put('/:id')
   async updateUser(@Param('id') id: string, @Body() dataToUpdate: UpdateUserDTO) {

@@ -1,47 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UserRepository {
-  private users: UserEntity[] = [];
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<UserEntity>) {}
+
 
   async salve(user: UserEntity) {
-    this.users.push(user);
+    const createdUser = new this.userModel(user);
+    console.log(createdUser);
+    return await createdUser.save();
   }
 
   async getAll() {
-    return this.users;
+    return await this.userModel.find().exec();
   }
 
-  async userExists(email: string) {
-    const possibleUser = this.users.find((user) => user.Email === email);
-    return possibleUser !== undefined;
+  async getById(id: string) {
+    return await this.userModel.findById(id).exec();
   }
 
-  private findById(id: string) {
-    const possibleUser = this.users.find((userSalved) => userSalved.id === id);
-
-    if (!possibleUser) {
-      throw new Error('Usuário não encontrado');
-    }
-
-    return possibleUser;
-  }
+  // async userExists(email: string) {
+  //   const possibleUser = await this.userModel.find(
+  //     (user) => user.Email === email,
+  //   );
+  //   return possibleUser !== undefined;
+  // }
 
   async updateUser(id: string, dataOfUpated: Partial<UserEntity>) {
-    const user = this.findById(id);
-    Object.entries(dataOfUpated).forEach(([key, value]) => {
-      if (key === 'id') {
-        return;
-      }
-      user[key] = value;
-    });
-    return user;
+    await this.userModel.updateOne({ _id: id }, dataOfUpated).exec();
+    return this.getById(id);
   }
 
   async deleteUser(id: string) {
-    const user = this.findById(id);
-    this.users = this.users.filter((userSalved) => userSalved.id !== id);
-    return user;
+    return await this.userModel.deleteOne({ _id: id }).exec();
   }
 }

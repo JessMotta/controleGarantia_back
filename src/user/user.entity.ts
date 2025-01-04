@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
-export class UserEntity {
-  id: string;
+import { Document } from "mongoose";
+export interface UserEntity extends Document{
   Nome: string;
   Email: string;
   Senha: string;

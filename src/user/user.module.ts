@@ -1,10 +1,13 @@
-import { Module } from "@nestjs/common";
-import { UserController } from "./user.controller";
-import { UserRepository } from "./user.repository";
-import { EmailUniqueValidator } from "./validation/email-unique.validator";
+import { Module } from '@nestjs/common';
+import { UserController } from './user.controller';
+import { UserRepository } from './user.repository';
+//import { EmailUniqueValidator } from './validation/email-unique.validator';
+import { UserSchema } from 'src/schemas/user.schema';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-    controllers: [UserController],
-    providers: [UserRepository, EmailUniqueValidator]
+  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
+  controllers: [UserController],
+  providers: [UserRepository],
 })
 export class UserModule {}
