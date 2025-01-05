@@ -7,7 +7,7 @@ export class EquipmentController {
   constructor(private equipmentRepository: EquipmentRepository){}
   @Post()
   async createEquipment(@Body() dataEquipment: CreateEquipmentDTO) {
-    this.equipmentRepository.salve(dataEquipment);
+    this.equipmentRepository.createUser(dataEquipment);
     return dataEquipment;
   }
 

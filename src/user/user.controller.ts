@@ -11,10 +11,10 @@ export class UserController {
   constructor(private userRepository: UserRepository) {}
 
   @Post()
-  async createUser(@Body() dataUser: UserEntity): Promise<UserEntity>  {
-    const user = await this.userRepository.salve(dataUser);
-    return user;
-  }
+  async createUser(@Body() dataUser: CreateUserDTO)  {
+   return await this.userRepository.createUser(dataUser);
+}
+
 
   @Get()
   async getAllUsers() {
