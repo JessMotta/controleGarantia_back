@@ -16,8 +16,9 @@ export class EmailUniqueValidator implements ValidatorConstraintInterface {
     value: any,
     validationArguments?: ValidationArguments,
   ): Promise<boolean> {
-    const userExists = await this.userRepository.userExists(value);
-    return !userExists;
+    const userExistsWithEmail = await this.userRepository.userExists(value);
+    console.log(userExistsWithEmail);
+    return userExistsWithEmail;
   }
 }
 export const UniqueEmail = (optionsValidations: ValidationOptions) => {

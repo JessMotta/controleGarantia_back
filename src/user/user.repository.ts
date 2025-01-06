@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -25,10 +25,12 @@ export class UserRepository {
 
   async userExists(email: string) {
     try {
-      const possibleUser = await this.userModel.find({ Email: email });
+      const possibleUser = await this.userModel
+        .findOne({ Email: email })
+        .exec();
       return possibleUser !== undefined;
     } catch (err) {
-      console.error(err);
+      throw new BadRequestException(err);
     }
   }
 
