@@ -7,4 +7,6 @@ export class CreateEquipmentDTO {
   Local_Retirado: string;
   @IsNotEmpty({ message: 'O campo Coordenador não pode ser vazio' })
   Coordenador_UFV: string;
+  @IsNotEmpty({ message: 'O campo Responsável não pode ser vazio' })
+  Pessoa_Atualizacao: string;
 }
