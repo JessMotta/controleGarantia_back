@@ -19,4 +19,13 @@ export class EquipmentRepository {
   async getAll() {
     return await this.equipmentModel.find().exec();
   }
+
+  async getById(id: string) {
+    return await this.equipmentModel.findById(id).exec();
+  }
+
+  async updateEquipment(id: string, dataOfUpdated: Partial<EquipmentEntity>) {
+    await this.equipmentModel.updateOne({ _id: id }, dataOfUpdated).exec();
+    return this.getById(id);
+  }
 }
