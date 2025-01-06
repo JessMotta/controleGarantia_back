@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class EquipmentRepository {
   private equipments = [];
 
-  async salve(equipment) {
+  async createUser(equipment) {
     this.equipments.push(equipment);
   }
 
