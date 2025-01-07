@@ -1,7 +1,8 @@
 {
   "name": "controle-garantia",
   "engines": {
-    "node": "22.x"
+    "node": "22.x",
+    "npm": "10.x"
   },
   "version": "0.0.1",
   "description": "",
