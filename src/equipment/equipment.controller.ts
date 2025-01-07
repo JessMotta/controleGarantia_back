@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { EquipmentRepository } from './equipment.repository';
 import { CreateEquipmentDTO } from './dto/CreateEquipment.dto';
 import { ListEquipmentsDTO } from './dto/ListEquipments.dto';
@@ -22,6 +30,14 @@ export class EquipmentController {
           equipment.Equipamento,
           equipment.Local_Retirado,
           equipment.Coordenador_UFV,
+          equipment.Pessoa_SetorResponsavel,
+          equipment.Data_Retirada,
+          equipment.Local_Enviado,
+          equipment.Local_Devolucao,
+          equipment.Destinatario,
+          equipment.Data_Devolucao,
+          equipment.Data_Instalacao,
+          equipment.Observacao,
           equipment.Pessoa_Atualizacao,
         ),
     );
@@ -36,6 +52,14 @@ export class EquipmentController {
       oneEquipment.Equipamento,
       oneEquipment.Local_Retirado,
       oneEquipment.Coordenador_UFV,
+      oneEquipment.Pessoa_SetorResponsavel,
+      oneEquipment.Data_Retirada,
+      oneEquipment.Local_Enviado,
+      oneEquipment.Local_Devolucao,
+      oneEquipment.Destinatario,
+      oneEquipment.Data_Devolucao,
+      oneEquipment.Data_Instalacao,
+      oneEquipment.Observacao,
       oneEquipment.Pessoa_Atualizacao,
     );
     return equipmentData;
@@ -54,6 +78,15 @@ export class EquipmentController {
     return {
       equipment: equipmentUpdated,
       message: 'Equipamento atualizado com sucesso',
+    };
+  }
+
+  @Delete('/:id')
+  async deleteEquipment(@Param('id') id: string) {
+    const equipmentDeleted = await this.equipmentRepository.deleteEquipment(id);
+    return {
+      equipment: equipmentDeleted,
+      message: 'Equipamento excluído com sucesso',
     };
   }
 }

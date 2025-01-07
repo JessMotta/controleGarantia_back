@@ -28,4 +28,8 @@ export class EquipmentRepository {
     await this.equipmentModel.updateOne({ _id: id }, dataOfUpdated).exec();
     return this.getById(id);
   }
+
+  async deleteEquipment(id: string) {
+    return await this.equipmentModel.deleteOne({ _id: id }).exec();
+  }
 }
