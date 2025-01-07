@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateEquipmentDTO {
+export class updateEquipmentDTO {
   @IsNotEmpty({ message: 'O campo Nome do Equipamento não pode ser vazio' })
   Equipamento: string;
 
